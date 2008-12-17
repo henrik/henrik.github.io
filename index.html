@@ -15,9 +15,10 @@
 
         $('#repos').replaceWith('<dl id="repos"></dl>');
         repos.each(function() {
+          var escapedDesc = $('<div/>').text(this.description).html();
           $('#repos').append(
             '<dt><a href="'+this.url+'">'+this.name+'</a> ('+this.watchers+')</dt>'+
-            '<dd>'+this.description+'</dd>'
+            '<dd>'+escapedDesc+'</dd>'
           );
         });
       });
