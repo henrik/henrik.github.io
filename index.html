@@ -3,7 +3,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>Henrik</title>
+	<title>Henrik on GitHub</title>
+	
+  <script src="http://www.google.com/jsapi"></script>
+  <script>
+    google.load("jquery", "1");
+    google.setOnLoadCallback(function() {
+      
+      getRepos('henrik', function(repos) {
+        if (!repos.length) return;
+
+        $('#repos').replaceWith('<dl id="repos"></dl>');
+        repos.each(function() {
+          $('#repos').append('<dt><a href="'+this.url+'">'+this.name+'</a> ('+this.watchers+')</dt><dd>'+this.description+'</dd>');
+        });
+      });
+    });
+    
+    function getRepos(username, callback) {
+      $.getJSON('http://github.com/api/v1/json/'+username+'?callback=?', function(data) {
+        var repos = data.user.repositories;
+        repos = $.grep(repos, function(r) { return !r.fork });
+        repos.sort(function(a, b) { return b.watchers - a.watchers });
+        repos = $(repos);
+        callback(repos);
+      });
+    }
+    
+  </script>
+  
+  <style>
+    body {
+      background: #FFF;
+      color: #000;
+      font: 14px "Helvetica", Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      margin: 0;
+    }
+    h2 {
+      margin: 35px 0 0 0;
+    }
+    dt {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    dd {
+      margin: 5px 0 15px 0;
+    }
+    dl#repos dd {
+      font-style: italic;
+    }
+  </style>
 </head>
 
 <body>
@@ -11,13 +64,17 @@
   <h1>Henrik</h1>
   
   <h2>Elsewhere</h2>
-  <ul>
-    <li><a href="http://henrik.nyh.se">Blog</a></li>
-    <li><a href="http://twitter.com/henrik">Twitter</a></li>
-  </ul>
+  <dl>
+    <dt>Blog</dt>
+    <dd><a href="http://henrik.nyh.se">The Pug Automatic</a></dd>
+    <dt>Twitter</dt>
+    <dd><a href="http://twitter.com/henrik">henrik</a></dd>
+    <dt>Email/Jabber</dt>
+    <dd><a href="mailto:henrik@nyh.se">henrik@nyh.se</a></dd>
+  </dl>
   
-  <h2>Repos</h2>
-  <p>See <a href="http://github.com/henrik">github.com/henrik</a>.</p>
+  <h2>Repos (sources, no forks)</h2>
+  <p id="repos">See <a href="http://github.com/henrik">github.com/henrik</a>.</p>
 
 </body>
 </html>
