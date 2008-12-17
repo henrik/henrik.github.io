@@ -15,7 +15,10 @@
 
         $('#repos').replaceWith('<dl id="repos"></dl>');
         repos.each(function() {
-          $('#repos').append('<dt><a href="'+this.url+'">'+this.name+'</a> ('+this.watchers+')</dt><dd>'+this.description+'</dd>');
+          $('#repos').append(
+            '<dt><a href="'+this.url+'">'+this.name+'</a> ('+this.watchers+')</dt>'+
+            '<dd>'+this.description+'</dd>'
+          );
         });
       });
 
