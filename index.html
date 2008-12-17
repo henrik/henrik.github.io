@@ -18,17 +18,17 @@
           $('#repos').append('<dt><a href="'+this.url+'">'+this.name+'</a> ('+this.watchers+')</dt><dd>'+this.description+'</dd>');
         });
       });
+
+      function getRepos(username, callback) {
+        $.getJSON('http://github.com/api/v1/json/'+username+'?callback=?', function(data) {
+          var repos = data.user.repositories;
+          repos = $.grep(repos, function(r) { return !r.fork });
+          repos.sort(function(a, b) { return b.watchers - a.watchers });
+          repos = $(repos);
+          callback(repos);
+        });
+      }
     });
-    
-    function getRepos(username, callback) {
-      $.getJSON('http://github.com/api/v1/json/'+username+'?callback=?', function(data) {
-        var repos = data.user.repositories;
-        repos = $.grep(repos, function(r) { return !r.fork });
-        repos.sort(function(a, b) { return b.watchers - a.watchers });
-        repos = $(repos);
-        callback(repos);
-      });
-    }
     
   </script>
   
